@@ -36,21 +36,32 @@ public class AccountCreate{
 
     }
     public Account CreateChecking() {
-        int accountNumber = RandAccountNum(); 
-        Console.WriteLine("How much would you like to deposit? ");
-        int balance = int.Parse(Console.ReadLine());
-        Console.WriteLine();  
-        
-        return new AccountChecking(accountNumber, balance);
+        int minAmount = 0;
+        while (minAmount < 100) {
+            Console.WriteLine("How much would you like to deposit? (Minimum $100): ");
+            minAmount = int.Parse(Console.ReadLine());
+            if (minAmount < 100) {
+                Console.WriteLine("The minimum deposit for a checking account is $100. Please enter a valid amount.");
+            }
+        }
+        int accountNumber = RandAccountNum();
+        return new AccountChecking(accountNumber, minAmount);
     }
 
     public Account CreateSavings() {
-        int accountNumber = RandAccountNum(); 
-        Console.WriteLine("How much would you like to deposit? ");
-        int balance = int.Parse(Console.ReadLine());
-        Console.WriteLine();   
-
-        return new AccountSavings(accountNumber, balance);
+        int minAmount = 0;
+        while (minAmount < 200) {
+            Console.WriteLine("How much would you like to deposit? (Minimum $200): ");
+            minAmount = int.Parse(Console.ReadLine());
+            if (minAmount < 200) {
+                Console.WriteLine("The minimum deposit for a savings account is $200. Please enter a valid amount.");
+            }
+        }
+        int accountNumber = RandAccountNum();
+        return new AccountSavings(accountNumber, minAmount);
+    }
+    public string GetAccountChoice() {
+        return accountChoice;
     }
 }
 

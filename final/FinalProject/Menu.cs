@@ -1,13 +1,14 @@
 public class Menu
 {
     bool running = true;
-    private int balance = 0;
     List<Account> accounts = new List<Account>();
     AccountLogin accountLogin = new AccountLogin();
     AccountCreate accountCreate = new AccountCreate();
     AccountDisplay accountDisplay = new AccountDisplay();
+    AccountTransfer accountTransfer = new AccountTransfer();
+
     User currentUser = new User("Guest", "Account", "username", "password");
-    // feature that prevents guest from using features that only logged in members can use; Loggedin bool?
+    bool isLoggedIn = false;
     public void Main()
     {   
         AccountSave accountSave = new AccountSave(this);
@@ -31,24 +32,64 @@ public class Menu
             {
                 case "1":
                     var loginResult = accountLogin.LogInPrompt();
-                    currentUser = loginResult.Item1;
-                    accounts = loginResult.Item2;
+                    if (loginResult.Item1 != null) {
+                        currentUser = loginResult.Item1;
+                        accounts = loginResult.Item2;
+                        isLoggedIn = true;
+                    }
+                    else {
+                        Console.WriteLine("Invalid login credentials. Please try again.");
+                        Console.ReadLine();
+                    }
                     break;
+
                 case "2":
-                    User newUser = CreateUser();
-                    Account newAccount = accountCreate.SelectAccount();
-                    accounts.Add(newAccount);
-                    accountSave.SerializetoJson(accounts, newUser);
+                    if (isLoggedIn) {
+                        if (CanCreateNewAccount(accounts, accountCreate.GetAccountChoice()))
+                        {
+                            Account newerAccount = accountCreate.SelectAccount();
+                            accounts.Add(newerAccount);
+                            accountSave.SerializetoJson(accounts, currentUser);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Account creation limit reached. Cannot create more accounts of this type.");
+                            Console.ReadLine();
+                        }
+                    } 
+                    else {
+                        User newUser = CreateUser();
+                        Account newAccount = accountCreate.SelectAccount();
+                        accounts.Add(newAccount);
+                        accountSave.SerializetoJson(accounts, newUser);
+                    }
                     break;
+
                 case "3":
+                    if (!isLoggedIn) {
+                        Console.WriteLine("Please log in or become a member today to use this feature!");
+                        Console.ReadLine();
+                        break;
+                    }  
+                    
                     accountDisplay.ListInfo(accounts, currentUser);
                     break;
+
                 case "4":
-  
+                    if (!isLoggedIn) {
+                        Console.WriteLine("Please log in or become a member today to use this feature!");
+                        Console.ReadLine();
+                        break;
+                    } 
+
+                    accountTransfer.TransferFunds(accounts);
+                    accountSave.SerializetoJson(accounts, currentUser);
                     break;
+
                 case "5":
                     running = false;
                     break;
+
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
@@ -56,6 +97,23 @@ public class Menu
         }
     }
 
+    private bool CanCreateNewAccount(List<Account> accounts, string accountChoice)
+    {
+        int checkingCount = accounts.Count(a => a is AccountChecking);
+        int savingsCount = accounts.Count(a => a is AccountSavings);
+
+        if (accountChoice == "1" && checkingCount >= 1)
+        {
+            return false; // Limit of 1 checking account
+        }
+
+        if (accountChoice == "2" && savingsCount >= 3)
+        {
+            return false; // Limit of 3 savings accounts
+        }
+
+        return true;
+    }
     public User CreateUser() {
         Console.WriteLine("Enter first name:  ");
         string firstName = Console.ReadLine();

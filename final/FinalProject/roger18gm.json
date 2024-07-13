@@ -1,0 +1,26 @@
+{
+  "User": [
+    "Roger",
+    "Galan",
+    "rogergal",
+    "mypassword"
+  ],
+  "Accounts": {
+    "AccountChecking": [
+      [
+        "560282839",
+        "1000"
+      ]
+    ],
+    "AccountSaving": [
+      [
+        "289025009",
+        "300"
+      ],
+      [
+        "432804118",
+        "0"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "User": [
+    "test",
+    "name",
+    "testuser",
+    "testpass"
+  ],
+  "Accounts": {
+    "AccountChecking": [],
+    "AccountSaving": [
+      [
+        "904876321",
+        "799"
+      ]
+    ]
+  }
+}

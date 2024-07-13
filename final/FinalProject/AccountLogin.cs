@@ -46,11 +46,9 @@ public class AccountLogin {
                     ));
                 }
                 Console.WriteLine("Logged in successfully! ");
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
                 return (user, accounts);
-            } else {
-                Console.WriteLine("Invalid username or password.");
-            }
+            } 
         } else {
             Console.WriteLine("User not found. Become a member today!");
         }

@@ -40,8 +40,3 @@ public class AccountSave {
         File.WriteAllText(fileName, jsonString);
     }
 }
-
-        // var data = new {
-        //     User = user,
-        //     Accounts = accounts
-        // };
