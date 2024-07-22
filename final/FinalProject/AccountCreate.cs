@@ -13,7 +13,7 @@ public class AccountCreate{
         accountChoice = Console.ReadLine();
         
         Account account = null;
-
+        // Tree to determine if account type is Checking or Savings
         switch(accountChoice)
         {
             case "1":
@@ -29,12 +29,16 @@ public class AccountCreate{
 
         return account;
     }
+
+    // Method to generate a random 9 digit account number
     public int RandAccountNum() {
 
         Random random = new Random();
         return random.Next(1000000, 1000000000);
 
     }
+
+    // Creates instance of AccountChecking
     public Account CreateChecking() {
         int minAmount = 0;
         while (minAmount < 100) {
@@ -48,6 +52,7 @@ public class AccountCreate{
         return new AccountChecking(accountNumber, minAmount);
     }
 
+    // Creates instance of AccountSavings
     public Account CreateSavings() {
         int minAmount = 0;
         while (minAmount < 200) {

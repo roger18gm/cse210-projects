@@ -1,6 +1,6 @@
 public class AccountDisplay {
 
-
+    // Displays list of accounts and User info
     public void ListInfo(List<Account> accounts, User user) {
         
         Console.Clear();

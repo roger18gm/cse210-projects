@@ -5,6 +5,7 @@ public abstract class Account {
     [JsonInclude]
     private decimal balance;
 
+    // Constructor
     public Account(int accountNumber, decimal balance) {
         this.accountNumber = accountNumber;
         this.balance = balance;

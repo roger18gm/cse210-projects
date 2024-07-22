@@ -7,6 +7,7 @@ public class Menu
     AccountDisplay accountDisplay = new AccountDisplay();
     AccountTransfer accountTransfer = new AccountTransfer();
 
+    // Welcomes user as "Guest"
     User currentUser = new User("Guest", "Account", "username", "password");
     bool isLoggedIn = false;
     public void Main()
@@ -16,7 +17,7 @@ public class Menu
         while (running) 
         {   
             Console.Clear();
-            Console.WriteLine($"Welcome, {currentUser.GetFirstName()}!"); // welcome guest and then users first name
+            Console.WriteLine($"Welcome, {currentUser.GetFirstName()}!"); 
             Console.WriteLine();
             Console.WriteLine("Menu Options: ");
             Console.WriteLine(" 1. Log In");
@@ -30,7 +31,7 @@ public class Menu
 
             switch (choice)
             {
-                case "1":
+                case "1": // Displays log-in prompt and updates current user info
                     var loginResult = accountLogin.LogInPrompt();
                     if (loginResult.Item1 != null) {
                         currentUser = loginResult.Item1;
@@ -43,12 +44,14 @@ public class Menu
                     }
                     break;
 
-                case "2":
-                    if (isLoggedIn) {
+                case "2": 
+                    if (isLoggedIn) { 
+                        // If logged in, user can add new account, 1 checking, 3 savings
                         if (CanCreateNewAccount(accounts, accountCreate.GetAccountChoice()))
                         {
                             Account newerAccount = accountCreate.SelectAccount();
                             accounts.Add(newerAccount);
+                            // Serializes account information
                             accountSave.SerializetoJson(accounts, currentUser);
                         }
                         else
@@ -57,10 +60,11 @@ public class Menu
                             Console.ReadLine();
                         }
                     } 
-                    else {
+                    else { // Guest user can make a new user and bank account
                         User newUser = CreateUser();
                         Account newAccount = accountCreate.SelectAccount();
                         accounts.Add(newAccount);
+                        // Serializes account information
                         accountSave.SerializetoJson(accounts, newUser);
                     }
                     break;
@@ -71,7 +75,7 @@ public class Menu
                         Console.ReadLine();
                         break;
                     }  
-                    
+                    // User has to be logged in to display their account balances
                     accountDisplay.ListInfo(accounts, currentUser);
                     break;
 
@@ -81,8 +85,9 @@ public class Menu
                         Console.ReadLine();
                         break;
                     } 
-
+                    // User has to be logged in to transfer funds
                     accountTransfer.TransferFunds(accounts);
+                    // Serializes account information
                     accountSave.SerializetoJson(accounts, currentUser);
                     break;
 
